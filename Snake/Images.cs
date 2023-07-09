@@ -16,8 +16,10 @@ namespace Snake
     
         private static ImageSource LoadImage(string fileName)
         {
-            return new BitmapImage(new Uri($"Assts/{fileName}", UriKind.Relative));
+            //return new BitmapImage(new Uri($"\\..\\..\\..\\Asset\\{fileName}", UriKind.Relative));
+            return new BitmapImage(new Uri($"\\Assets\\{fileName}", UriKind.Relative));
         }
 
     }
 }
+

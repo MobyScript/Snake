@@ -57,7 +57,7 @@ namespace Snake
             int r = Rows / 2;
 
             //Loop over the columns
-            for (int x = 1; x <= Columns; x++)
+            for (int x = 1; x <= 3; x++)
             {
                 Grid[r, x] = GridValue.Snake;
                 snakePosition.AddFirst(new Position(r, x));

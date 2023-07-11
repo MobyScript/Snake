@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Snake
-{
+{   
     public static class Images
     {
         //Importing images
@@ -16,7 +16,7 @@ namespace Snake
     
         private static ImageSource LoadImage(string fileName)
         {
-            //return new BitmapImage(new Uri($"\\..\\..\\..\\Asset\\{fileName}", UriKind.Relative));
+         
             return new BitmapImage(new Uri($"\\Assets\\{fileName}", UriKind.Relative));
         }
 

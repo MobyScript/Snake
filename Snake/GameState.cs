@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Snake
 {
@@ -30,6 +27,9 @@ namespace Snake
         public bool GamerOver { get; private set; }
 
 
+        //Buffer Linked List 
+        private readonly LinkedList<Direction> dirChanges = new LinkedList<Direction>();
+
         // SnakePosition propertie
         // I am using a linked list because it allows me to delete the front and end of the snake 
         private readonly LinkedList<Position> snakePosition = new LinkedList<Position>();
@@ -47,7 +47,14 @@ namespace Snake
 
             //Methods
             AddSnake();
+
+            //If you want to add more food, just duplicate the method
             AddFood();
+            AddFood();
+            AddFood();
+            AddFood();
+
+
         }
 
         private void AddSnake()
@@ -90,7 +97,8 @@ namespace Snake
             }
 
             Position pos = empty[random.Next(empty.Count)];
-            Grid[pos.Row, pos.Column] = GridValue.Food; 
+            Grid[pos.Row, pos.Column] = GridValue.Food;
+         
         }
 
         //Return Position of the Snake's Head
@@ -130,10 +138,40 @@ namespace Snake
             snakePosition.RemoveLast();
         }
 
+
+        //
+
+        private Direction GetLastDirection()
+        {
+            //if the buffer is empty
+            if(dirChanges.Count == 0)
+            {
+                return Dir;
+            }
+            return dirChanges.Last.Value;
+        }
+
+        //Method to make the snake change direciton
+        private bool CanChangeDirection(Direction newDirection)
+        {
+            //returns true if the given direction can be added to the buffer
+            if(dirChanges.Count == 2)
+            {
+                return false;
+            }
+            Direction lastDir = GetLastDirection();
+            return newDirection != lastDir && newDirection != lastDir.Opposite();
+        }
        
+
         public void ChangeDirection(Direction direction)
         {
-            Dir = direction; 
+            //Check if can snake can change direction
+            if(CanChangeDirection(direction))
+            {
+                dirChanges.AddLast(direction);
+            }
+          
         }
 
         //Death Methods
@@ -162,6 +200,14 @@ namespace Snake
 
         public void Move()
         {
+
+            //Check if there is a direction change
+            if(dirChanges.Count >0)
+            {
+                Dir = dirChanges.First.Value;
+                dirChanges.RemoveFirst();
+            }
+
             Position newHeadPos = HeadPosition().Translate(Dir);
             GridValue hit = WillHit(newHeadPos);
 
